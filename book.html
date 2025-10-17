@@ -1,0 +1,39 @@
+---
+layout: default
+title: Book a Consultation
+---
+
+<div class="booking-container" style="max-width: 800px; margin: 0 auto; padding: 2rem; text-align: center; font-family: sans-serif;">
+
+  <h1>Book a 30-Minute Consultation</h1>
+  <p>Schedule your session below and secure your spot with a quick online payment.</p>
+
+  <!-- Step 1: Booking (Calendly Embed) -->
+  <h2 style="margin-top: 2rem;">1️⃣ Schedule Your Appointment</h2>
+  <p>Select a date and time that works for you:</p>
+
+  <!-- Calendly inline widget -->
+  <div class="calendly-inline-widget"
+       data-url="https://calendly.com/yourname/30min"
+       style="min-width:320px;height:630px;">
+  </div>
+  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+  <!-- Divider -->
+  <hr style="margin: 3rem 0; border: none; border-top: 1px solid #ddd;">
+
+  <!-- Step 2: Payment (Stripe Payment Link) -->
+  <h2>2️⃣ Confirm with Payment</h2>
+  <p>Once your booking is complete, please confirm your appointment by paying below:</p>
+
+  <a href="https://buy.stripe.com/test_1234abcd" 
+     target="_blank"
+     style="display: inline-block; background: #635bff; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px; transition: background 0.3s;">
+    💳 Pay $50 with Stripe
+  </a>
+
+  <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+    You’ll receive a confirmation email once payment is complete.
+  </p>
+
+</div>
