@@ -3,37 +3,185 @@ layout: default
 title: Book a Consultation
 ---
 
-<div class="booking-container" style="max-width: 800px; margin: 0 auto; padding: 2rem; text-align: center; font-family: sans-serif;">
+<div class="booking-container" style="max-width: 900px; margin: 0 auto; padding: 2rem; text-align: center; font-family: sans-serif;">
+  <h1>Book a Consultation</h1>
+  <p>Choose your preferred session and confirm securely.</p>
 
-  <h1>Book a 30-Minute Consultation</h1>
-  <p>Schedule your session below and secure your spot with a quick online payment.</p>
-
-  <!-- Step 1: Booking (Calendly Embed) -->
+  <!-- Step 1: Booking -->
   <h2 style="margin-top: 2rem;">1️⃣ Schedule Your Appointment</h2>
-  <p>Select a date and time that works for you:</p>
+  <p>Select a time below:</p>
 
-  <!-- Calendly inline widget -->
+  <!-- Calendly Embed -->
   <div class="calendly-inline-widget"
-       data-url="https://calendly.com/yourname/30min"
+       data-url="https://calendly.com/yourname"
        style="min-width:320px;height:630px;">
   </div>
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
-  <!-- Divider -->
   <hr style="margin: 3rem 0; border: none; border-top: 1px solid #ddd;">
 
-  <!-- Step 2: Payment (Stripe Payment Link) -->
-  <h2>2️⃣ Confirm with Payment</h2>
-  <p>Once your booking is complete, please confirm your appointment by paying below:</p>
+  <!-- Step 2: Choose Service -->
+  <h2>2️⃣ Choose Your Service</h2>
+  <p>Enter your email and select a consultation type below:</p>
 
-  <a href="https://buy.stripe.com/test_1234abcd" 
-     target="_blank"
-     style="display: inline-block; background: #635bff; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 16px; transition: background 0.3s;">
-    💳 Pay $50 with Stripe
-  </a>
+  <!-- Email Field -->
+  <div style="margin: 1.5rem 0;">
+    <input id="clientEmail"
+           type="email"
+           placeholder="Your email address"
+           style="padding:10px;width:280px;border:1px solid #ccc;border-radius:8px;font-size:15px;"
+           required>
+  </div>
 
-  <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-    You’ll receive a confirmation email once payment is complete.
-  </p>
+  <div class="services-grid" style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 2rem;">
+    
+    <!-- Service 1 -->
+    <div class="service-card" style="background:#f9f9f9;padding:1.5rem;border-radius:12px;width:260px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <h3>🕧 30-Min Consultation</h3>
+      <p>Quick session for focused questions.</p>
+      <strong>$50 USD</strong><br>
+      <button class="pay-btn"
+              data-service="30-Min Consultation"
+              data-url="https://buy.stripe.com/test_1234abcd?success_url=https://yourdomain.com/book.html?success=true"
+              style="background:#635bff;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-size:15px;margin-top:10px;cursor:pointer;">
+        Pay with Stripe
+      </button>
+    </div>
 
+    <!-- Service 2 -->
+    <div class="service-card" style="background:#f9f9f9;padding:1.5rem;border-radius:12px;width:260px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <h3>🕐 1-Hour Deep Dive</h3>
+      <p>Perfect for strategy and detailed discussions.</p>
+      <strong>$90 USD</strong><br>
+      <button class="pay-btn"
+              data-service="1-Hour Deep Dive"
+              data-url="https://buy.stripe.com/test_5678efgh?success_url=https://yourdomain.com/book.html?success=true"
+              style="background:#635bff;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-size:15px;margin-top:10px;cursor:pointer;">
+        Pay with Stripe
+      </button>
+    </div>
+
+    <!-- Service 3 -->
+    <div class="service-card" style="background:#f9f9f9;padding:1.5rem;border-radius:12px;width:260px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <h3>🌟 Premium Session</h3>
+      <p>Extended session + follow-up summary.</p>
+      <strong>$150 USD</strong><br>
+      <button class="pay-btn"
+              data-service="Premium Session"
+              data-url="https://buy.stripe.com/test_9876ijkl?success_url=https://yourdomain.com/book.html?success=true"
+              style="background:#635bff;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-size:15px;margin-top:10px;cursor:pointer;">
+        Pay with Stripe
+      </button>
+    </div>
+  </div>
 </div>
+
+<!-- Payment Modal -->
+<div id="paymentModal"
+     style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;
+            background-color:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
+  <div id="modalContent" style="background:#fff;padding:2rem;border-radius:12px;max-width:650px;width:90%;position:relative;">
+    <button id="closePaymentModal"
+            style="position:absolute;top:10px;right:15px;border:none;background:none;font-size:24px;cursor:pointer;">&times;</button>
+    <h2 style="margin-bottom:1rem;">Complete Your Payment</h2>
+    <iframe id="paymentFrame"
+            src=""
+            style="width:100%;height:600px;border:none;border-radius:8px;"></iframe>
+  </div>
+</div>
+
+<!-- Success Message -->
+<div id="successMessage"
+     style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;
+            background-color:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
+  <div style="background:#fff;padding:2rem 3rem;border-radius:12px;max-width:500px;width:90%;text-align:center;">
+    <h2 style="color:#28a745;">✅ Payment Successful!</h2>
+    <p>Thank you for confirming your appointment.</p>
+    <p>You’ll receive a confirmation email shortly.</p>
+    <button id="closeSuccessMessage"
+            style="margin-top:1.5rem;background:#635bff;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-size:15px;cursor:pointer;">
+      Close
+    </button>
+  </div>
+</div>
+
+<!-- Hidden Netlify Form -->
+<form name="booking-notify" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="bot-field">
+  <input type="email" name="email" id="notifyEmail">
+  <input type="text" name="service" id="serviceType">
+  <input type="text" name="subject" value="New Consultation Payment">
+  <textarea name="message" id="formMessage"></textarea>
+</form>
+
+<script>
+  const modal = document.getElementById('paymentModal');
+  const closeBtn = document.getElementById('closePaymentModal');
+  const iframe = document.getElementById('paymentFrame');
+  const buttons = document.querySelectorAll('.pay-btn');
+  const successModal = document.getElementById('successMessage');
+  const closeSuccess = document.getElementById('closeSuccessMessage');
+  const serviceInput = document.getElementById('serviceType');
+  const messageInput = document.getElementById('formMessage');
+  const notifyEmail = document.getElementById('notifyEmail');
+  const clientEmail = document.getElementById('clientEmail');
+
+  let selectedService = '';
+
+  // Open payment modal
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const emailValue = clientEmail.value.trim();
+      if (!emailValue) {
+        alert('Please enter your email before proceeding.');
+        clientEmail.focus();
+        return;
+      }
+
+      selectedService = btn.getAttribute('data-service');
+      const url = btn.getAttribute('data-url');
+      iframe.src = url;
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Close modal
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    iframe.src = '';
+    document.body.style.overflow = 'auto';
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      iframe.src = '';
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  // Detect success redirect
+  if (window.location.search.includes('success=true')) {
+    successModal.style.display = 'flex';
+
+    // Fill Netlify form fields
+    serviceInput.value = selectedService || 'Unknown Service';
+    notifyEmail.value = clientEmail.value || 'No email provided';
+    messageInput.value = `A client has successfully paid for the ${serviceInput.value} service.\n\nClient Email: ${notifyEmail.value}`;
+
+    // Submit Netlify form (auto email notification)
+    const form = document.forms['booking-notify'];
+    const data = new FormData(form);
+    fetch('/', {
+      method: 'POST',
+      body: data
+    });
+  }
+
+  // Close success modal
+  closeSuccess.addEventListener('click', () => {
+    successModal.style.display = 'none';
+    window.history.replaceState({}, document.title, window.location.pathname);
+  });
+</script>
